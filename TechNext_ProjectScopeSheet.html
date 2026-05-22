@@ -28,7 +28,7 @@
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
-    background: linear-gradient(160deg, #e8eeff 0%, #f3f0ff 35%, #fce8f8 65%, #ffeef5 100%);
+    background: linear-gradient(170deg, #f9f7f8 0%, #ece5e9 35%, #ddd0d7 70%, #c8b8c2 100%);
   background-attachment: fixed;
     color: var(--text);
     font-size: 13px;
@@ -45,9 +45,9 @@
 
   /* ─── HEADER ─────────────────────────────────────────────────── */
   .header-banner {
-    background: rgba(255,255,255,0.65);
-  backdrop-filter: blur(8px);
-    border-bottom: 1px solid #0f1828;
+    background: rgba(249,247,248,0.88);
+  backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(113,75,103,0.15);
     padding: 28px 36px 26px;
     margin-bottom: 24px;
     position: relative;
@@ -57,7 +57,7 @@
     position: absolute;
     top: 0; left: 0;
     width: 4px; height: 100%;
-    background: linear-gradient(180deg, #3b82f6, #6366f1);
+    background: linear-gradient(180deg, #714B67, #9b6e8f);
   }
   .header-inner {
     display: flex;
@@ -384,6 +384,7 @@
 /* ─── MOBILE RESPONSIVE ──────────────────────────────────────── */
 @media (max-width: 768px) {
   .page { padding: 0 0 40px; }
+  .inner { padding: 0 8px; }
   .header-banner { padding: 18px 16px 16px; }
   .header-inner {
     flex-direction: column;
@@ -394,11 +395,13 @@
   h1 { font-size: 20px; }
   .header-right { align-items: flex-start; width: 100%; }
   .header-meta { text-align: left; }
-  .card { padding: 16px 14px; margin: 0 12px 16px; border-radius: 10px; }
-  .card-header { padding: 12px 14px; margin: 0 12px; }
-  .form-row { flex-direction: column; gap: 10px; }
-  .form-row .field { min-width: 0; }
+  .grid-2 { grid-template-columns: 1fr !important; }
+  .grid-3 { grid-template-columns: 1fr !important; }
   .section-grid { grid-template-columns: 1fr !important; }
+  .card { padding: 16px 14px; margin: 0 0 14px; border-radius: 10px; }
+  .card-header { padding: 12px 14px; margin: 0; }
+  .form-row { flex-direction: column; gap: 10px; }
+  .form-row .field { min-width: 0; width: 100% !important; }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   table { min-width: 500px; }
   .sig-row { flex-direction: column; gap: 16px; }
