@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TechNext – Project Scope Sheet</title>
+<style>
+  /* ─── TOKENS ─────────────────────────────────────────────────── */
+  :root {
+    --page-bg:      #1b2540;   /* rich dark navy page canvas */
+    --card:         #ffffff;
+    --card-border:  #e2e8f2;
+    --field-bg:     #f4f7fc;   /* very light blue-tinted input bg */
+    --field-border: #d4dcea;
+    --field-focus:  #2563eb;
+    --text:         #1e2a3a;
+    --text-muted:   #5a6d8a;
+    --text-subtle:  #94a3b8;
+    --accent:       #2563eb;
+    --accent-bg:    #eff6ff;
+    --accent-dim:   #dbeafe;
+    --radius:       10px;
+    --radius-sm:    7px;
+    --shadow:       0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', Roboto, sans-serif;
+    background: var(--page-bg);
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ─── PAGE ──────────────────────────────────────────────────── */
+  .page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 0 60px;
+  }
+
+  /* ─── HEADER ─────────────────────────────────────────────────── */
+  .header-banner {
+    background: #131c30;
+    border-bottom: 1px solid #0f1828;
+    padding: 28px 36px 26px;
+    margin-bottom: 24px;
+    position: relative;
+  }
+  .header-banner::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, #3b82f6, #6366f1);
+  }
+  .header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 14px;
+  }
+  .brand {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    color: #60a5fa;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: #f0f6ff;
+    letter-spacing: -0.2px;
+    margin-bottom: 3px;
+  }
+  .subtitle { font-size: 12px; color: #7a92b8; }
+
+  .header-right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+  }
+  .header-meta { text-align: right; }
+  .company-name { font-size: 13px; font-weight: 700; color: #e0e9ff; margin-bottom: 4px; }
+  .header-meta .email { font-size: 11.5px; color: #7a92b8; margin-right: 8px; }
+  .badge {
+    display: inline-block;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.4);
+    color: #93c5fd;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+  }
+
+  /* PDF EXPORT BUTTON */
+  .btn-pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: inherit;
+    letter-spacing: 0.01em;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap;
+  }
+  .btn-pdf:hover { background: #1d4ed8; }
+  .btn-pdf:active { transform: scale(0.98); }
+  .btn-pdf svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+  /* ─── INNER ─────────────────────────────────────────────────── */
+  .inner { padding: 0 28px; }
+
+  /* ─── GRID ──────────────────────────────────────────────────── */
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* ─── CARD ──────────────────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    padding: 22px 22px 26px;
+    box-shadow: var(--shadow);
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #eef1f8;
+  }
+  .card-header .icon {
+    width: 30px; height: 30px;
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-dim);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .card-header .icon svg { width: 14px; height: 14px; stroke: var(--accent); }
+  .card-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--text-muted);
+    text-transform: uppercase;
+  }
+  .card-header-right { margin-left: auto; }
+
+  /* ─── FORM ELEMENTS ─────────────────────────────────────────── */
+  .field { margin-bottom: 13px; }
+  .field label {
+    display: block;
+    font-size: 9.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="number"],
+  input[type="date"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--field-bg);
+    border: 1px solid var(--field-border);
+    border-radius: var(--radius-sm);
+    padding: 8px 12px;
+    font-size: 12.5px;
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+    font-family: inherit;
+  }
+  input:hover, select:hover, textarea:hover {
+    border-color: #b0c0da;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--field-focus);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.1);
+  }
+  input::placeholder, textarea::placeholder { color: #b8c6dc; }
+
+  .row { display: flex; gap: 8px; }
+  .row .field { flex: 1; }
+
+  select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 10px center;
+    padding-right: 30px;
+    cursor: pointer;
+  }
+
+  textarea { resize: vertical; min-height: 82px; line-height: 1.6; }
+
+  /* ─── TOGGLE BUTTONS ─────────────────────────────────────────── */
+  .toggle-group { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .toggle-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 13px;
+    border: 1.5px solid var(--field-border);
+    border-radius: 20px;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--text-muted);
+    cursor: pointer;
+    background: var(--field-bg);
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .toggle-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-bg); }
+  .toggle-btn.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+
+  /* ─── STATUS BUTTONS ─────────────────────────────────────────── */
+  .status-btn { border-radius: var(--radius-sm); padding: 5px 13px; }
+  .status-btn[data-val="New"].active                   { background: #eff6ff; border-color: #3b82f6; color: #1d4ed8; }
+  .status-btn[data-val="Scoping"].active               { background: #fefce8; border-color: #ca8a04; color: #92400e; }
+  .status-btn[data-val="Approved"].active              { background: #f0fdf4; border-color: #16a34a; color: #15803d; }
+  .status-btn[data-val="Resource Mobilization"].active { background: #fff7ed; border-color: #ea580c; color: #c2410c; }
+  .status-btn[data-val="Development"].active           { background: #eef2ff; border-color: #6366f1; color: #4338ca; }
+  .status-btn[data-val="Active"].active                { background: #faf5ff; border-color: #7c3aed; color: #6d28d9; }
+  .status-btn[data-val="On Hold"].active               { background: #fef2f2; border-color: #dc2626; color: #b91c1c; }
+  .status-btn[data-val="Completed"].active             { background: #f8fafc; border-color: #64748b; color: #334155; }
+
+  /* ─── MODULE COUNTER ─────────────────────────────────────────── */
+  .module-counter {
+    background: var(--accent-bg);
+    border: 1px solid var(--accent-dim);
+    color: var(--accent);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 11px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ─── MODULE GRID ─────────────────────────────────────────────── */
+  .module-section { margin-bottom: 18px; }
+  .module-section-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    color: var(--text-subtle);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .module-section-label::after { content: ''; flex: 1; height: 1px; background: #eef1f8; }
+  .module-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+  .module-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid var(--field-border);
+    border-radius: var(--radius-sm);
+    padding: 7px 10px;
+    cursor: pointer;
+    background: var(--field-bg);
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .module-item:hover { border-color: var(--accent); background: var(--accent-bg); }
+  .module-item.checked { border-color: var(--accent); background: var(--accent-bg); }
+  .module-item input[type="checkbox"] {
+    width: 14px; height: 14px;
+    accent-color: var(--accent);
+    cursor: pointer; flex-shrink: 0;
+    margin: 0; border: none; padding: 0; min-width: unset;
+  }
+  .module-item span { font-size: 11.5px; color: var(--text-muted); line-height: 1.3; }
+  .module-item.checked span { color: #1d4ed8; font-weight: 600; }
+
+  /* ─── BUDGET ─────────────────────────────────────────────────── */
+  .budget-display { display: flex; align-items: baseline; gap: 8px; margin: 6px 0 2px; }
+  .budget-currency { font-size: 20px; font-weight: 700; color: var(--accent); align-self: center; }
+  .budget-display .budget-input {
+    font-size: 30px; font-weight: 700; color: var(--accent);
+    border: none; border-bottom: 2px dashed var(--accent-dim);
+    border-radius: 0; padding: 0 2px; width: 150px;
+    background: transparent; box-shadow: none;
+  }
+  .budget-display .budget-input:focus { border-bottom-color: var(--accent); box-shadow: none; background: transparent; }
+  .budget-label { font-size: 12px; color: var(--text-subtle); }
+
+  /* ─── PRIORITY BUTTONS ───────────────────────────────────────── */
+  .priority-btn { border-radius: var(--radius-sm); padding: 6px 18px; }
+  .priority-btn[data-val="Low"].active      { background: #f0fdf4; border-color: #22c55e; color: #15803d; }
+  .priority-btn[data-val="Medium"].active   { background: #fefce8; border-color: #eab308; color: #92400e; }
+  .priority-btn[data-val="High"].active     { background: #fff7ed; border-color: #f97316; color: #c2410c; }
+  .priority-btn[data-val="Critical"].active { background: #fef2f2; border-color: #ef4444; color: #b91c1c; }
+
+  /* ─── CONTACT / CONSULTANT ROWS ─────────────────────────────── */
+  .contact-row { display: flex; gap: 6px; }
+  .contact-row input:first-child  { flex: 2; }
+  .contact-row input:nth-child(2) { flex: 2; }
+  .contact-row input:last-child   { flex: 1.2; }
+  .consultant-row { display: flex; gap: 8px; }
+  .consultant-row input  { flex: 1.4; }
+  .consultant-row select { flex: 1; }
+
+  /* ─── SEPARATORS ─────────────────────────────────────────────── */
+  .sep { border: none; border-top: 1px solid #eef1f8; margin: 12px 0; }
+
+  /* ─── DECISIONS / ISSUES ─────────────────────────────────────── */
+  .di-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  .di-label {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.12em;
+    color: var(--text-muted); text-transform: uppercase;
+    margin-bottom: 6px; display: flex; align-items: center; gap: 8px;
+  }
+  .di-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .di-dot.green { background: #16a34a; }
+  .di-dot.red   { background: #dc2626; }
+  .di-sublabel { font-size: 11px; color: var(--text-subtle); margin-bottom: 8px; font-style: italic; }
+  .di-decisions textarea:focus { border-color: #16a34a; box-shadow: 0 0 0 3px rgba(22,163,74,0.1); }
+  .di-issues   textarea:focus { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220,38,38,0.1); }
+
+  /* ─── FOOTER ─────────────────────────────────────────────────── */
+  .footer {
+    margin-top: 28px; font-size: 11px; color: var(--text-subtle);
+    display: flex; align-items: center; gap: 8px;
+    border-top: 1px solid rgba(255,255,255,0.07);
+    padding-top: 18px;
+  }
+  .footer strong { color: #aec1e0; font-weight: 600; }
+  .footer .dot { color: #3a4e6a; }
+
+  /* ─── PRINT / PDF — FORCE WHITE ─────────────────────────────── */
+  @media print {
+    body  { background: #fff !important; }
+    .page { background: #fff !important; padding-bottom: 20px; }
+    .header-banner {
+      background: #1b2540 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    .card { box-shadow: none !important; }
+    .btn-pdf { display: none !important; }
+    .inner { padding: 0 20px; }
+    .header-banner { padding: 22px 32px; }
+    .module-item:hover { border-color: var(--field-border); background: var(--field-bg); }
+    .toggle-btn:hover  { border-color: var(--field-border); color: var(--text-muted); background: var(--field-bg); }
+    .footer { border-top-color: #e2e8f0; }
+    .footer strong { color: #334155; }
+    .footer .dot { color: #cbd5e1; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header-banner">
+    <div class="header-inner">
+      <div style="padding-left:14px;">
+        <div class="brand">TechNext</div>
+        <h1>Project Scope Sheet</h1>
+        <p class="subtitle">Odoo ERP — Implementation Scoping &amp; Classification</p>
+      </div>
+      <div class="header-right">
+        <div class="header-meta">
+          <div class="company-name">TechNext Asia</div>
+          <div><span class="email">admin@technext.asia</span><span class="badge">Odoo ERP Partner</span></div>
+        </div>
+        <button class="btn-pdf" onclick="window.print()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+            <rect x="6" y="14" width="12" height="8"/>
+          </svg>
+          Export to PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="inner">
+
+  <!-- ROW 1 -->
+  <div class="grid-2">
+
+    <!-- CLIENT INFORMATION -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <span class="card-title">Client Information</span>
+      </div>
+
+      <div class="field">
+        <label>Company / Client Name</label>
+        <input type="text" placeholder="e.g. Acme Corporation Pte Ltd">
+      </div>
+      <div class="field">
+        <label>Contact Persons</label>
+        <div class="contact-row">
+          <input type="text" placeholder="Full name &amp; designation">
+          <input type="email" placeholder="Email">
+          <input type="text" placeholder="+65 xxxx xxxx">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Company Size</label>
+          <select>
+            <option value="">— Select —</option>
+            <option>1–10</option><option>11–50</option><option>51–200</option>
+            <option>201–500</option><option>500+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>No. of Odoo Users</label>
+          <input type="number" placeholder="e.g. 20" min="1">
+        </div>
+      </div>
+      <hr class="sep">
+      <div class="field">
+        <label>Industry</label>
+        <select>
+          <option value="">— Select Industry —</option>
+          <option>Manufacturing</option><option>Retail &amp; E-commerce</option>
+          <option>Distribution &amp; Logistics</option><option>Food &amp; Beverage</option>
+          <option>Professional Services</option><option>Construction &amp; Real Estate</option>
+          <option>Healthcare</option><option>Education</option><option>Technology</option>
+          <option>Finance &amp; Insurance</option><option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Current System</label>
+        <input type="text" placeholder="e.g. QuickBooks, SAP, spreadsheets, none">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Odoo Version</label>
+          <select>
+            <option value="">— Select —</option>
+            <option>Odoo 17</option><option>Odoo 16</option>
+            <option>Odoo 15</option><option>Odoo 14</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Odoo Edition</label>
+          <div class="toggle-group">
+            <span class="toggle-btn" data-group="edition" data-val="Community">Community</span>
+            <span class="toggle-btn" data-group="edition" data-val="Enterprise">Enterprise</span>
+            <span class="toggle-btn" data-group="edition" data-val="Odoo.sh">Odoo.sh</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROJECT DETAILS -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+          </svg>
+        </div>
+        <span class="card-title">Project Details</span>
+      </div>
+
+      <div class="field">
+        <label>Project Name</label>
+        <input type="text" placeholder="e.g. Acme — Full ERP Implementation">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Project Ref</label>
+          <input type="text" placeholder="TNX-2026-" id="project-ref">
+        </div>
+        <div class="field">
+          <label>Internal Reference</label>
+          <input type="text" placeholder="e.g. IMPL-SG-042">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Sales Rep</label>
+          <input type="text" placeholder="Assigned sales representative">
+        </div>
+        <div class="field">
+          <label>Referral Rep</label>
+          <input type="text" placeholder="Referral source / partner">
+        </div>
+      </div>
+      <div class="field">
+        <label>Consultant/s Assigned</label>
+        <div class="consultant-row">
+          <input type="text" placeholder="Consultant name">
+          <select>
+            <option value="">— Role / Specialisation —</option>
+            <option>Functional Consultant</option><option>Technical Consultant</option>
+            <option>Project Manager</option><option>Business Analyst</option>
+            <option>Lead Consultant</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Developer/s Assigned</label>
+        <div class="consultant-row">
+          <input type="text" placeholder="Developer name">
+          <select>
+            <option value="">— Module Focus / Stack —</option>
+            <option>Odoo Core</option><option>Python / ORM</option>
+            <option>JS / OWL Frontend</option><option>API / Integration</option>
+            <option>Full Stack</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Start Date</label>
+          <input type="date" id="start-date">
+        </div>
+        <div class="field">
+          <label>Target Go-Live</label>
+          <input type="date" id="golive-date">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Hypercare Start</label>
+          <input type="date" id="hypercare-start">
+        </div>
+        <div class="field">
+          <label>Hypercare End</label>
+          <input type="date" id="hypercare-end">
+        </div>
+      </div>
+      <div class="field">
+        <label>Project Status</label>
+        <div class="toggle-group">
+          <span class="toggle-btn status-btn active" data-group="status" data-val="New">New</span>
+          <span class="toggle-btn status-btn" data-group="status" data-val="Scoping">Scoping</span>
+          <span class="toggle-btn status-btn" data-group="status" data-val="Approved">Approved</span>
+          <span class="toggle-btn status-btn" data-group="status" data-val="Resource Mobilization">Resource Mobilization</span>
+          <span class="toggle-btn status-btn" data-group="status" data-val="Development">Development</span>
+          <span class="toggle-btn status-btn" data-group="status" data-val="Active">Active</span>
+          <span class="toggle-btn status-btn" data-group="status" data-val="On Hold">On Hold</span>
+          <span class="toggle-btn status-btn" data-group="status" data-val="Completed">Completed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 2 -->
+  <div class="grid-2">
+
+    <!-- ENGAGEMENT TYPE -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <span class="card-title">Engagement Type</span>
+      </div>
+      <div class="field">
+        <label>Project Type</label>
+        <div class="toggle-group">
+          <span class="toggle-btn" data-group="project-type" data-val="New Implementation">New Implementation</span>
+          <span class="toggle-btn" data-group="project-type" data-val="Migration / Upgrade">Migration / Upgrade</span>
+          <span class="toggle-btn" data-group="project-type" data-val="Customisation">Customisation</span>
+          <span class="toggle-btn" data-group="project-type" data-val="Support Retainer">Support Retainer</span>
+          <span class="toggle-btn" data-group="project-type" data-val="Training Only">Training Only</span>
+          <span class="toggle-btn" data-group="project-type" data-val="Audit & Review">Audit &amp; Review</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Hosting</label>
+        <div class="toggle-group">
+          <span class="toggle-btn" data-group="hosting" data-val="Odoo.sh Cloud">Odoo.sh Cloud</span>
+          <span class="toggle-btn" data-group="hosting" data-val="On-Premise">On-Premise</span>
+          <span class="toggle-btn" data-group="hosting" data-val="Client VPS">Client VPS</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Data Migration</label>
+        <div class="toggle-group">
+          <span class="toggle-btn" data-group="migration" data-val="None">None</span>
+          <span class="toggle-btn" data-group="migration" data-val="Basic">Basic</span>
+          <span class="toggle-btn" data-group="migration" data-val="Full">Full</span>
+          <span class="toggle-btn" data-group="migration" data-val="Complex">Complex</span>
+        </div>
+      </div>
+      <div class="field">
+        <label>Billing Model</label>
+        <div class="toggle-group">
+          <span class="toggle-btn" data-group="billing" data-val="Fixed Price">Fixed Price</span>
+          <span class="toggle-btn" data-group="billing" data-val="Time & Materials">Time &amp; Materials</span>
+          <span class="toggle-btn" data-group="billing" data-val="Retainer">Retainer</span>
+          <span class="toggle-btn" data-group="billing" data-val="Milestone">Milestone</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUDGET & PRIORITY -->
+    <div class="card">
+      <div class="card-header">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="1" x2="12" y2="23"/>
+            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+          </svg>
+        </div>
+        <span class="card-title">Budget &amp; Priority</span>
+      </div>
+      <div class="field">
+        <label>Estimated Budget</label>
+        <div class="budget-display">
+          <span class="budget-currency">SGD</span>
+          <input type="text" class="budget-input" id="budget-input" value="50,000" placeholder="0">
+          <span class="budget-label">estimated</span>
+        </div>
+      </div>
+      <hr class="sep" style="margin:18px 0;">
+      <div class="field">
+        <label>Priority Level</label>
+        <div class="toggle-group">
+          <span class="toggle-btn priority-btn" data-group="priority" data-val="Low">Low</span>
+          <span class="toggle-btn priority-btn" data-group="priority" data-val="Medium">Medium</span>
+          <span class="toggle-btn priority-btn" data-group="priority" data-val="High">High</span>
+          <span class="toggle-btn priority-btn" data-group="priority" data-val="Critical">Critical</span>
+        </div>
+      </div>
+      <div class="field" style="margin-top:18px;">
+        <label>Complexity</label>
+        <div class="toggle-group">
+          <span class="toggle-btn" data-group="complexity" data-val="Standard">Standard</span>
+          <span class="toggle-btn" data-group="complexity" data-val="Moderate">Moderate</span>
+          <span class="toggle-btn" data-group="complexity" data-val="Complex">Complex</span>
+          <span class="toggle-btn" data-group="complexity" data-val="Enterprise">Enterprise</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ODOO MODULES -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-header">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/>
+          <rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/>
+        </svg>
+      </div>
+      <span class="card-title">Odoo Modules in Scope</span>
+      <div class="card-header-right"><span class="module-counter" id="module-counter">0 SELECTED</span></div>
+    </div>
+
+    <div class="module-section">
+      <div class="module-section-label">Sales &amp; CRM</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>CRM</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Sales</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Email Marketing</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>SMS Marketing</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Subscriptions</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Live Chat</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Social Marketing</span></label>
+      </div>
+    </div>
+    <div class="module-section">
+      <div class="module-section-label">Procurement &amp; Inventory</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Purchase</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Inventory</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Warehouse Management</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Barcode</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Delivery &amp; Logistics</span></label>
+      </div>
+    </div>
+    <div class="module-section">
+      <div class="module-section-label">Manufacturing &amp; Quality</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Manufacturing (MRP)</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>PLM</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Quality Control</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Maintenance</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Repair</span></label>
+      </div>
+    </div>
+    <div class="module-section">
+      <div class="module-section-label">Accounting &amp; Finance</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Accounting</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Invoicing</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Expenses</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Bank &amp; Payments</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>GST / Tax Reports</span></label>
+      </div>
+    </div>
+    <div class="module-section">
+      <div class="module-section-label">HR, Payroll &amp; Attendance</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Employees</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Leave Management</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Payroll</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Attendance</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Recruitment</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Appraisals</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>eLearning &amp; Training</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Lunch</span></label>
+      </div>
+    </div>
+    <div class="module-section">
+      <div class="module-section-label">Projects &amp; Productivity</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Project</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Timesheets</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Helpdesk</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Field Service</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Documents</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Sign</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Calendar</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Discuss</span></label>
+      </div>
+    </div>
+    <div class="module-section">
+      <div class="module-section-label">Website &amp; eCommerce</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Website</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>eCommerce</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Point of Sale (POS)</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Rental</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Restaurant / Bar</span></label>
+      </div>
+    </div>
+    <div class="module-section">
+      <div class="module-section-label">Operations &amp; Integrations</div>
+      <div class="module-grid">
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Fleet</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Dashboards &amp; BI</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>Reporting</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>API / Integration</span></label>
+        <label class="module-item"><input type="checkbox" class="mod-cb"><span>IoT Box</span></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW 3 -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-header">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </div>
+        <span class="card-title">Scope of Work</span>
+      </div>
+      <div class="field">
+        <label>Key Business Requirements</label>
+        <textarea rows="4" placeholder="Describe the main business goals, pain points, and objectives this project must address..."></textarea>
+      </div>
+      <div class="field">
+        <label>Integrations Required</label>
+        <textarea rows="3" placeholder="e.g. Shopify, payment gateway, custom API, 3PL, HR system..."></textarea>
+      </div>
+      <div class="field">
+        <label>Training Required</label>
+        <div class="toggle-group">
+          <span class="toggle-btn" data-group="training" data-val="End User">End User</span>
+          <span class="toggle-btn" data-group="training" data-val="Admin">Admin</span>
+          <span class="toggle-btn" data-group="training" data-val="Key User Workshop">Key User Workshop</span>
+          <span class="toggle-btn" data-group="training" data-val="Train-the-Trainer">Train-the-Trainer</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <div class="icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+        </div>
+        <span class="card-title">Risks &amp; Notes</span>
+      </div>
+      <div class="field">
+        <label>Out of Scope / Exclusions</label>
+        <textarea rows="3" placeholder="List what is explicitly excluded from this engagement..."></textarea>
+      </div>
+      <div class="field">
+        <label>Assumptions &amp; Dependencies</label>
+        <textarea rows="3" placeholder="e.g. Client provides clean data, existing network infrastructure in place..."></textarea>
+      </div>
+      <div class="field">
+        <label>Additional Notes</label>
+        <textarea rows="3" placeholder="Any other relevant context, special requirements, or consultant notes..."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECISIONS & ISSUES -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="card-header">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+      </div>
+      <span class="card-title">Decisions &amp; Issues</span>
+    </div>
+    <div class="di-grid">
+      <div class="di-section di-decisions">
+        <div class="di-label"><span class="di-dot green"></span>Decisions</div>
+        <p class="di-sublabel">Decisions agreed upon by both TechNext and the client</p>
+        <textarea rows="8" placeholder="Record decisions made during meetings or correspondence confirmed by both parties. Include date and participants.&#10;&#10;e.g. 15 May 2026 — Agreed to exclude payroll from Phase 1. Client to revisit in Phase 2. (J. Tan / P. Lim)"></textarea>
+      </div>
+      <div class="di-section di-issues">
+        <div class="di-label"><span class="di-dot red"></span>Issues</div>
+        <p class="di-sublabel">Open issues, blockers, or items requiring resolution</p>
+        <textarea rows="8" placeholder="Log issues, blockers, or unresolved items that may impact delivery.&#10;&#10;e.g. [OPEN] Client has not provided data migration files — blocking UAT. Owner: Client IT. Target: 22 May 2026."></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Prepared by <strong>&nbsp;TechNext Asia</strong>
+    <span class="dot">·</span>
+    <span id="footer-modules">0 Odoo modules selected</span>
+    <span class="dot">·</span>
+    <span id="footer-date"></span>
+  </div>
+
+  </div><!-- /inner -->
+</div>
+
+<script>
+  document.getElementById('footer-date').textContent =
+    new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  document.querySelectorAll('.toggle-btn[data-group]').forEach(btn => {
+    btn.onclick = function() {
+      const g = this.dataset.group;
+      const multi = ['training', 'project-type'].includes(g);
+      if (multi) {
+        this.classList.toggle('active');
+      } else {
+        const was = this.classList.contains('active');
+        document.querySelectorAll(`.toggle-btn[data-group="${g}"]`).forEach(b => b.classList.remove('active'));
+        if (!was) this.classList.add('active');
+      }
+    };
+  });
+
+  function updateModuleCount() {
+    const n = document.querySelectorAll('.mod-cb:checked').length;
+    document.getElementById('module-counter').textContent = n + ' SELECTED';
+    document.getElementById('footer-modules').textContent =
+      n + ' Odoo module' + (n !== 1 ? 's' : '') + ' selected';
+  }
+  document.querySelectorAll('.mod-cb').forEach(cb => {
+    cb.addEventListener('change', function() {
+      this.closest('.module-item').classList.toggle('checked', this.checked);
+      updateModuleCount();
+    });
+  });
+
+  const budgetInput = document.getElementById('budget-input');
+  budgetInput.addEventListener('blur', function() {
+    const n = parseFloat(this.value.replace(/,/g, ''));
+    if (!isNaN(n)) this.value = n.toLocaleString('en-US');
+  });
+  budgetInput.addEventListener('focus', function() { this.value = this.value.replace(/,/g, ''); });
+
+  const goLive = document.getElementById('golive-date');
+  const hcStart = document.getElementById('hypercare-start');
+  goLive.addEventListener('change', function() {
+    if (this.value && !hcStart.value) hcStart.value = this.value;
+  });
+</script>
+</body>
+</html>
